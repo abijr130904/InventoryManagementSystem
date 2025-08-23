@@ -54,6 +54,16 @@ class ProductResource extends Resource
                     ->required()
                     ->numeric()
                     ->default(0),
+                Forms\Components\Select::make('satuan')
+                    ->options([
+                        'pcs' => 'Pcs (Satuan)',
+                        'kg' => 'Kg (Kilogram)',
+                        'liter' => 'Liter',
+                        'meter' => 'Meter',
+                        'box' => 'Box',
+                    ])
+                    ->required()
+                    ->default('pcs'),
                 Forms\Components\FileUpload::make('gambar')
                     ->image()
                     ->directory('products')
@@ -80,6 +90,16 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('stok')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('satuan')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'pcs' => 'gray',
+                        'kg' => 'success',
+                        'liter' => 'info',
+                        'meter' => 'warning',
+                        'box' => 'danger',
+                        default => 'gray',
+                    }),
                 Tables\Columns\ImageColumn::make('gambar'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
